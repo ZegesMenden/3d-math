@@ -1,2 +1,8 @@
-<h1 align="center">3d-math</h1>
-<h3 align="center">A 3-dimensional math library for arduino</h1>
+# 3d-math
+### a 3 dimensional math library for arduino
+### with vector3 and quaternion math
+
+to use:
+add physics.h to your include folder, and physics.cpp to src
+
+# WARNING - CODE IS EXPERIMENTAL AND PROBABLY BROKEN
