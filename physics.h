@@ -267,14 +267,6 @@ public:
 
 };
 
-using Quaternion =  Quat<float>;
-using Quaternionf = Quat<float>;
-using Quaterniond = Quat<double>;
-
-using vector3 =  vec3<float>;
-using vector3f = vec3<float>;
-using vector3d = vec3<double>;
-
 template <class T = float>
 vec3<T> quat2vec(const Quat<T> &q) { return vec3<T>(q.x, q.y, q.z); };
 
