@@ -1,5 +1,3 @@
 # 3d-math
-### a 3 dimensional math library for arduino
-### with vector3 and quaternion math
+### a simple 3 dimensional math library for arduino
 
-# WARNING - CODE IS EXPERIMENTAL AND PROBABLY BROKEN
