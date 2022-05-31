@@ -7,9 +7,6 @@
 
 namespace physics {
 
-    #define fast_sqrt(x) (sqrtf(x))
-    #define fast_cos(x) 1.0 - (x * x) / 2.0
-
     template <class T = float>
     class vec3
     {
@@ -30,12 +27,6 @@ namespace physics {
          * @param z z component
          */
         vec3(T x, T y, T z) { this->x = x, this->y = y, this->z = z; }
-
-        /**
-         * @brief Return the string representation of a vec3
-         * @return string representation
-         */
-        operator String() const { return String(x) + "," + String(y) + "," + String(z); }
 
         /**
          * @brief Adds the right handed vector to the left handed vector
@@ -159,30 +150,10 @@ namespace physics {
         };
 
         /**
-         * @brief Returns the normalized vector
-         * @return normalized vector
-         */
-        vec3& fnorm() {
-            T normal = flen();
-
-            this->x /= normal;
-            this->y /= normal;
-            this->z /= normal;
-
-            return(*this);
-        };
-
-        /**
          * @brief Returns the length of the vector
          * @return length of the vector
          */
         inline T len() { return(sqrtf(x * x + y * y + z * z)); };
-
-        /**
-         * @brief Returns the length of the vector
-         * @return length of the vector
-         */
-        inline T flen() { return(fast_sqrt(x * x + y * y + z * z)); }
 
         /**
          * @brief Returns the cross product of the left and right hand vectors
@@ -329,13 +300,7 @@ namespace physics {
          * @return length of the quaternion
          */
         inline T norm() const { return (sqrtf(w * w + x * x + y * y + z * z)); } // norm of Quat
-
-        /**
-         * @brief Calculates the length of the quaternion
-         * @return length of the quaternion
-         */
-        inline T fnorm() const { return (fast_sqrt(w * w + x * x + y * y + z * z)); } // fast norm of Quat
-
+        
         /**
          * @brief Computes the conjugate of the quaternion
          * @return conjugate of the quaternion
@@ -358,16 +323,6 @@ namespace physics {
         } // normalize Quat
 
         /**
-         * @brief Normalizes the quaternion
-         * @return normalized quaternion
-         */
-        Quat fnormalize()
-        {
-            T n = fnorm();
-            return (Quat(w / n, x / n, y / n, z / n));
-        } // normalize Quat
-
-        /**
          * @brief Computes the fractional of the quaternon
          * @return fractional of the quaternion
          */
@@ -380,30 +335,6 @@ namespace physics {
 
             return this->normalize();
         };
-
-        // Quat from_euler(T pitch, T yaw, T roll); // convert euler angles to Quat
-        // Quat from_euler(const vec3 &euler) const { return from_euler(euler.x, euler.y, euler.z); } // convert euler angles to Quat
-
-        /**
-         * @brief Computes the quaternion from a set of axis angles and magnitude
-         * @param t magnitude
-         * @param angles normalized axis angles
-         * @return quaternion
-         */
-        Quat from_axis_angle_fast(T t, const vec3<T>& angles) {
-
-            T t_2 = t / 2.0f;
-
-            T sn;
-            t < 0.35 ? sn = t_2 - ((t_2 * t_2 * t_2) / 6.0f) : sn = sinf(t_2);
-            t < 0.15 ? w = 1.0f - ((t_2 * t_2) / 2.0f) : w = cosf(t_2);
-
-            x = angles.x * sn;
-            y = angles.y * sn;
-            z = angles.z * sn;
-
-            return(*this);
-        }; // honestly just use this its basically just as accurate for quat updates
 
         /**
          * @brief Computes the quaternion from a set of axis angles and magnitude
@@ -531,46 +462,6 @@ namespace physics {
          * @return the calculatedquaternion
          */
         const Quat<T> from_eulers(vec3<T>& eulers) { return this->from_eulers(eulers.x, eulers.y, eulers.z); }
-
-        /**
-         * @brief Converts a set of euler angles to a quaternion
-         * @param roll angle around the roll axis
-         * @param pitch angle around the pitch axis
-         * @param yaw angle around the yaw axis
-         * @return the calculatedquaternion
-         */
-        const Quat<T> from_eulers_fast(T roll, T pitch, T yaw) {
-
-            float cos_cutoff = 0.5; // cutoff for cosine angle approximation (0.5 gives < 0.15 degrees of error)
-            float sin_cutoff = 0.5; // cutoff for sine angle approximation (0.5 gives < 0.15 degrees of error)
-
-            T cr, cp, cy, sr, sp, sy;
-
-            abs(roll) < cos_cutoff ? cr = fast_cos(roll / 2.0f) : cr = cosf(roll / 2.0f);
-            abs(pitch) < cos_cutoff ? cp = fast_cos(pitch / 2.0f) : cp = cosf(pitch / 2.0f);
-            abs(yaw) < cos_cutoff ? cy = fast_cos(yaw / 2.0f) : cy = cosf(yaw / 2.0f);
-
-            abs(roll) < sin_cutoff ? sr = roll / 2.0f : sr = sinf(roll / 2.0f);
-            abs(pitch) < sin_cutoff ? sp = pitch / 2.0f : sp = sinf(pitch / 2.0f);
-            abs(yaw) < sin_cutoff ? sy = yaw / 2.0f : sy = sinf(yaw / 2.0f);
-
-            this->w = cr * cp * cy + sr * sp * sy;
-            this->x = sr * cp * cy - cr * sp * sy;
-            this->y = cr * sp * cy + sr * cp * sy;
-            this->z = cr * cp * sy - sr * sp * cy;
-
-            return (*this);
-
-        }
-
-        /**
-         * @brief Converts a set of euler angles to a quaternion
-         * @param roll angle around the roll axis
-         * @param pitch angle around the pitch axis
-         * @param yaw angle around the yaw axis
-         * @return the calculatedquaternion
-         */
-        const Quat<T> from_eulers_fast(vec3<T>& eulers) { return this->from_eulers_fast(eulers.x, eulers.y, eulers.z); }
 
     };
 
