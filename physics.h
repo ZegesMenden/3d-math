@@ -198,7 +198,7 @@ public:
 	 * @return rotated quaternion as a quaternion
 	 */
 	Quaternion rotate(const Quaternion& q) const {
-		Quaternion ret = (*this * q) * Quaternion(this->w, -this->x, -this->y, -this->z);
+		Quaternion ret = (*this * q) * Quaternion(w, -x, -y, -z);
 		return ret;
 	};
 
@@ -223,7 +223,7 @@ public:
 	const Vector3 euler_angles() const {
 
 		float r = atan2f(2.0f * (w*x + y*z), 1.0f - 2.0f * (x*x + y*y));
-		float p = 2.0f * (w*y - z*x);
+		float p = asinf(2.0f * (w*y - x*z));
 		float y = atan2f(2.0f * (w*z + x*y), 1.0f - 2.0f * (y*y + z*z));
 
 		// T r = atan2f(w * x + y * z, 0.5f - x * x - y * y);
