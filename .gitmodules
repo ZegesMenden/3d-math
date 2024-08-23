@@ -1,0 +1,3 @@
+[submodule "tests/SHUT"]
+	path = tests/SHUT
+	url = https://github.com/ZegesMenden/SHUT
