@@ -6,12 +6,6 @@
 class Quaternion;
 
 class Vector3 {
-// for sqrtf, sinf, cosf, atan2f
-#include <math.h>
-
-class Quaternion;
-
-class Vector3 {
 public:
 
     float x, y, z;
@@ -22,7 +16,7 @@ public:
     inline Vector3(const Quaternion &other);
 
     bool operator==(const Vector3 &other) {
-        return (abs(x - other.x) < 1e-12) && (abs(y - other.y) < 1e-12) && (abs(z - other.z) < 1e-12);
+        return (abs(x - other.x) < __FLT_EPSILON__) && (abs(y - other.y) < __FLT_EPSILON__) && (abs(z - other.z) < __FLT_EPSILON__);
     }
 
     Vector3& operator=(const Vector3 &other) {
@@ -102,40 +96,11 @@ public:
     float angle_between_vectors(const Vector3 &other) const {
 		return acosf(dot(other) / (len() * (other.len())));
 	}
-    /**
-	 * @brief Returns the dot product of the left and right hand vectors
-	 * @return dot product of the two vectors
-	 */
-	float dot(const Vector3& other) const {
-		return (x*other.x + y*other.y + z*other.z);
-	}
-
-    float len() const {
-        return sqrtf(x*x + y*y + z*z);
-    }
-
-    float angle_between_vectors(const Vector3 &other) const {
-		return acosf(dot(other) / (len() * (other.len())));
-	}
 
 };
 
 class Quaternion {
-class Quaternion {
 public:
-
-    float w, x, y, z;
-
-    Quaternion() {w=0; x=0; y=0; z=0;};
-    Quaternion(float _w, float _x, float _y, float _z): w(_w), x(_x), y(_y), z(_z) {};
-    Quaternion(const Quaternion &other) { *this = other; };
-    Quaternion(const Vector3 &other) : w(0), x(other.x), y(other.y), z(other.z) {};
-
-    bool operator==(const Quaternion &other) {
-        return (abs(w - other.w) < __FLT_EPSILON__) && (abs(x - other.x) < __FLT_EPSILON__) && (abs(y - other.y) < __FLT_EPSILON__) && (abs(z - other.z) < __FLT_EPSILON__);
-    }
-
-    Quaternion& operator=(const Quaternion &other) {
 
     float w, x, y, z;
 
@@ -177,31 +142,7 @@ public:
     Quaternion operator-() const {
         return Quaternion(-w, -x, -y, -z);
     }
-    Quaternion operator+(const Quaternion &other) const {
-        return Quaternion(w+other.w, x+other.x, y+other.y, z+other.z);
-    }
 
-    Quaternion& operator+=(const Quaternion &other) {
-        *this = *this + other;
-        return *this;
-    }
-
-    Quaternion operator-(const Quaternion &other) const {
-        return Quaternion(w-other.w, x-other.x, y-other.y, z-other.z);
-    }
-
-    Quaternion& operator-=(const Quaternion &other) {
-        *this = *this - other;
-        return *this;
-    }
-
-    Quaternion operator-() const {
-        return Quaternion(-w, -x, -y, -z);
-    }
-
-    Quaternion operator*(const float scalar) const {
-        return Quaternion(w*scalar, x*scalar, y*scalar, z*scalar);
-    }
     Quaternion operator*(const float scalar) const {
         return Quaternion(w*scalar, x*scalar, y*scalar, z*scalar);
     }
